@@ -11,9 +11,9 @@ function App() {
       <section>
         <h4>Your assignment</h4>
         <ul className="assignment-tasks">
-          <li>Add a button that allows users to add an item in to do list</li>
+          <li>Allow users to add an item in to do list</li>
           <li>
-            Add a button that allows users to remove an item in to do list
+            Allow users to remove an individual item in to do list
           </li>
           <li>
             Separate todoitems listing component into a different component
