@@ -11,6 +11,8 @@ function App() {
       <section>
         <h4>Your assignment</h4>
         <p>You cannot use any library to do this task</p>
+        <p>A todo item should not be empty</p>
+        <p>A todo item cannot contain word: "Postpone" in any format</p>
         <ul className="assignment-tasks">
           <li>Allow users to add an item in to do list</li>
           <li>
