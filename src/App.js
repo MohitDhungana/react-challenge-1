@@ -7,6 +7,8 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
 
+import Layout from './Components/Layout';
+
 import TodoApp from './Components/Todo';
 import Login from './Components/Auth/Login';
 import Signup from './Components/Auth/Signup';
@@ -29,8 +31,19 @@ const queryClient = new QueryClient({
 
 function App() {
   const [showSignup, setShowSignup] = useState(false);
+  const [showProfileEdit, setShowProfileEdit] = useState(false);
 
   const [authenticated, setAuthenticated] = useState(false);
+
+  const showProfileEditComponent = () => {
+    setShowSignup(false);
+    setShowProfileEdit(true);
+  };
+
+  const hideProfileEditComponent = () => {
+    setShowSignup(false);
+    setShowProfileEdit(false);
+  };
 
   const handleSignout = () => {
     clearLocalStorage(JWT_TOKEN);
@@ -43,11 +56,26 @@ function App() {
       <TodoProvider
         value={{
           queryClient,
+          handleSignout,
+          showProfileEdit,
+          showProfileEditComponent,
+          hideProfileEditComponent,
         }}
       >
         <QueryClientProvider client={queryClient}>
-          {isAuthenticated() || authenticated ? (
-            <TodoApp handleSignout={handleSignout} />
+          {showProfileEdit ? (
+            <Layout>
+              <Signup
+                showProfileEdit={showProfileEdit}
+                hideProfileEditComponent={hideProfileEditComponent}
+                setShowSignup={setShowSignup}
+                setAuthenticated={setAuthenticated}
+              />
+            </Layout>
+          ) : isAuthenticated() || authenticated ? (
+            <Layout>
+              <TodoApp />
+            </Layout>
           ) : showSignup ? (
             <Signup
               setShowSignup={setShowSignup}

@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 import { postData } from '../../utils/httpbaseUtils';
-import { JWT_TOKEN, USER_NAME, setLocalStorage } from '../../utils/commonUtils';
+import {
+  JWT_TOKEN,
+  USER_NAME,
+  setLocalStorage,
+  clearLocalStorage,
+} from '../../utils/commonUtils';
 
 import './authStyle.css';
 
@@ -25,6 +30,11 @@ const Login = (props) => {
       },
     }
   );
+
+  const handleSignupClick = () => {
+    setShowSignup(true);
+    clearLocalStorage(JWT_TOKEN);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -65,7 +75,7 @@ const Login = (props) => {
 
           <input className="btn block-btn" type="submit" value="LOGIN" />
 
-          <span className="auth-account" onClick={() => setShowSignup(true)}>
+          <span className="auth-account" onClick={handleSignupClick}>
             Create an account
           </span>
         </form>
