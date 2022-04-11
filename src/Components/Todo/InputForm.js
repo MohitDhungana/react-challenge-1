@@ -3,6 +3,8 @@ import { useMutation } from 'react-query';
 import TodoContext from '../../Context';
 import { postData } from '../../utils/httpbaseUtils';
 
+import './inputForm.css';
+
 const wordRegex = new RegExp(/postpone+/i);
 
 const TodoForm = (props) => {

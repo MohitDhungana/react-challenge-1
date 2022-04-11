@@ -29,13 +29,6 @@ export function deleteData(url = '', id = '') {
         : '',
     },
   });
-  // return axios.post(`${process.env.REACT_APP_REST_API_HOST}${url}`, data, {
-  //   headers: {
-  //     Authorization: isAuthenticated()
-  //       ? `Bearer ${getLocalStorage(JWT_TOKEN)}`
-  //       : '',
-  //   },
-  // });
 }
 
 export function getData(url, data) {

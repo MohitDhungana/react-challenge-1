@@ -1,10 +1,13 @@
 import './App.css';
+import './styles/variables.css';
+import './styles/core.css';
+
 import { useState } from 'react';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-import TodoApp from './Components/Todo/TodoApp';
+import TodoApp from './Components/Todo';
 import Login from './Components/Auth/Login';
 import Signup from './Components/Auth/Signup';
 

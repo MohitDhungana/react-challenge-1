@@ -1,6 +1,7 @@
 .auth-container {
   max-width: 600px;
   margin: 2rem auto 0 auto;
+  padding: 0 1rem;
 }
 
 .auth-container .auth-card {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 import { postData } from '../../utils/httpbaseUtils';
-import { JWT_TOKEN, setLocalStorage } from '../../utils/commonUtils';
+import { JWT_TOKEN, USER_NAME, setLocalStorage } from '../../utils/commonUtils';
 
 import './authStyle.css';
 
@@ -21,6 +21,7 @@ const Login = (props) => {
       onSuccess: (data, variables, context) => {
         setAuthenticated(true);
         setLocalStorage(JWT_TOKEN, data?.data?.token);
+        setLocalStorage(USER_NAME, data?.data?.user?.name);
       },
     }
   );
