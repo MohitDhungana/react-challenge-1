@@ -19,6 +19,8 @@ body {
   --primary-light: #4c9750;
   --primary-red: #eb1808;
   --primary-dark-red: #d4190c;
+  --secondary: #d5d558;
+  --secondary-dark: #b6b64c;
 }
 
 code {
@@ -43,6 +45,7 @@ code {
   background-color: var(--primary);
   border-radius: 5px;
   width: 10rem;
+  height: 2rem;
 }
 
 .btn:hover {
@@ -50,6 +53,13 @@ code {
   background-color: var(--primary-dark);
 }
 
+.btn-secondary {
+  background-color: var(--secondary);
+}
+
+.btn-secondary:hover {
+  background-color: var(--secondary-dark);
+}
 .btn-delete {
   background-color: var(--primary-red);
 }

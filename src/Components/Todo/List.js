@@ -46,7 +46,7 @@ const List = (props) => {
 
   return (
     <div className="todo-items-card">
-      <h2 className="todo-title">Todos</h2>
+      <h2 className="todo-title">Todos {todoCounts && `(${todoCounts})`}</h2>
 
       {(fetchTodoResult?.isLoading ||
         fetchTodoResult?.isRefetching ||
@@ -55,7 +55,7 @@ const List = (props) => {
 
       {todoCounts === 0 && <div>You dont have any tasks right now</div>}
 
-      <ul>
+      <ul className="list-container">
         {todos?.map((todoItem) => (
           <div className="todo-list" key={todoItem?.id}>
             <li
@@ -68,16 +68,18 @@ const List = (props) => {
 
             <div className="todo-actions">
               <button
-                className="btn"
+                className={`btn action-btn ${
+                  todoItem?.completed ? 'btn-secondary' : ''
+                }`}
                 onClick={() =>
                   handleUpdateTask(todoItem?._id, todoItem?.completed)
                 }
               >
-                Mark as {todoItem?.completed ? 'incomplete' : 'complete'}
+                Mark {todoItem?.completed ? 'Incomplete' : 'Complete'}
               </button>
 
               <button
-                className="btn btn-delete"
+                className="btn btn-delete action-btn"
                 onClick={() => handleDeleteClick(todoItem?._id)}
               >
                 Delete

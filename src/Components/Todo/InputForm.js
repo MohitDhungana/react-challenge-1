@@ -61,17 +61,21 @@ const TodoForm = (props) => {
   return (
     <div className="form-container">
       <form className="todo-form">
-        <input
-          className="todo-input"
-          type="text"
-          value={inputText}
-          onChange={handleInputText}
-        />
-        <button className="btn" type="submit" onClick={handleTextAdd}>
-          {`Add${addTodoMutation?.isLoading ? 'ing...' : ''}`}
-        </button>
-        <button className="btn" type="button" onClick={handleClear}>
-          Reset
+        <div className="todo-input-container">
+          <input
+            className="todo-input"
+            type="text"
+            value={inputText}
+            onChange={handleInputText}
+          />
+          {(inputText?.length > 0 || error?.visible) && (
+            <button className="reset-btn" type="button" onClick={handleClear}>
+              X
+            </button>
+          )}
+        </div>
+        <button className="btn add-btn" type="submit" onClick={handleTextAdd}>
+          {`ADD${addTodoMutation?.isLoading ? 'ING...' : ''}`}
         </button>
       </form>
 
