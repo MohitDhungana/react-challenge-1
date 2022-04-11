@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { useQuery, useMutation } from 'react-query';
 import { getData, deleteData, putData } from '../../utils/httpbaseUtils';
 
+import Loader from '../Common/Loader';
+
 import TodoContext from '../../Context';
 
 const List = (props) => {
@@ -43,38 +45,48 @@ const List = (props) => {
   };
 
   return (
-    <section>
-      <h3>Todos</h3>
+    <div className="todo-items-card">
+      <h2 className="todo-title">Todos</h2>
 
       {(fetchTodoResult?.isLoading ||
         fetchTodoResult?.isRefetching ||
         deleteTodoMutation?.isLoading ||
-        updateMutation?.isLoading) && <div>loading...</div>}
+        updateMutation?.isLoading) && <Loader />}
 
       {todoCounts === 0 && <div>You dont have any tasks right now</div>}
 
-      <ul className="todos">
+      <ul>
         {todos?.map((todoItem) => (
-          <div key={todoItem?.id}>
-            <li className={todoItem?.completed ? 'text-strike' : ''}>
-              {todoItem?.description}(
-              {todoItem?.completed ? 'Complete' : 'Incomplete'})
-            </li>
-            <button
-              onClick={() =>
-                handleUpdateTask(todoItem?._id, todoItem?.completed)
-              }
+          <div className="todo-list" key={todoItem?.id}>
+            <li
+              className={`todo-items ${
+                todoItem?.completed ? 'text-strike' : ''
+              }`}
             >
-              Mark as {todoItem?.completed ? 'incomplete' : 'complete'}
-            </button>
+              {todoItem?.description}
+            </li>
 
-            <button onClick={() => handleDeleteClick(todoItem?._id)}>
-              Delete
-            </button>
+            <div className="todo-actions">
+              <button
+                className="btn"
+                onClick={() =>
+                  handleUpdateTask(todoItem?._id, todoItem?.completed)
+                }
+              >
+                Mark as {todoItem?.completed ? 'incomplete' : 'complete'}
+              </button>
+
+              <button
+                className="btn btn-delete"
+                onClick={() => handleDeleteClick(todoItem?._id)}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
       </ul>
-    </section>
+    </div>
   );
 };
 

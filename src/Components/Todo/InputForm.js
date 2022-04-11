@@ -59,19 +59,24 @@ const TodoForm = (props) => {
   };
 
   return (
-    <>
-      <form>
-        <input type="text" value={inputText} onChange={handleInputText} />
-        <button type="submit" onClick={handleTextAdd}>
+    <div className="form-container">
+      <form className="todo-form">
+        <input
+          className="todo-input"
+          type="text"
+          value={inputText}
+          onChange={handleInputText}
+        />
+        <button className="btn" type="submit" onClick={handleTextAdd}>
           {`Add${addTodoMutation?.isLoading ? 'ing...' : ''}`}
         </button>
-        <button type="button" onClick={handleClear}>
+        <button className="btn" type="button" onClick={handleClear}>
           Reset
         </button>
       </form>
 
       {error?.visible && <div className="error-text">{error?.message}</div>}
-    </>
+    </div>
   );
 };
 

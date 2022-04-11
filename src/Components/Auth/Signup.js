@@ -3,6 +3,8 @@ import { useMutation } from 'react-query';
 import { postData } from '../../utils/httpbaseUtils';
 import { setLocalStorage, JWT_TOKEN } from '../../utils/commonUtils';
 
+import Loader from '../Common/Loader';
+
 const Signup = (props) => {
   const { setShowSignup, setAuthenticated } = props;
   const [signupPayload, setSignupPayload] = useState({
@@ -37,14 +39,14 @@ const Signup = (props) => {
   };
 
   return (
-    <>
-      <h2>Create New User</h2>
-      <div className="login">
-        <form onSubmit={handleSubmit}>
-          <label>
-            <b>Name </b>
-          </label>
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2 className="auth-title">Create New User</h2>
+
+        <form className="auth-form" onSubmit={handleSubmit}>
           <input
+            className="auth-input"
+            autoComplete="off"
             name="name"
             value={signupPayload.name}
             onChange={(e) => {
@@ -54,12 +56,9 @@ const Signup = (props) => {
             placeholder="Name"
           />
 
-          <br />
-
-          <label>
-            <b>Email </b>
-          </label>
           <input
+            className="auth-input"
+            autoComplete="off"
             name="email"
             value={signupPayload.email}
             onChange={(e) => {
@@ -69,12 +68,9 @@ const Signup = (props) => {
             placeholder="Email"
           />
 
-          <br />
-
-          <label>
-            <b>Password </b>
-          </label>
           <input
+            className="auth-input"
+            autoComplete="off"
             name="password"
             value={signupPayload.password}
             onChange={handleFormChange}
@@ -82,12 +78,9 @@ const Signup = (props) => {
             placeholder="Password"
           />
 
-          <br />
-
-          <label>
-            <b>Age </b>
-          </label>
           <input
+            className="auth-input"
+            autoComplete="off"
             name="age"
             value={signupPayload.age}
             onChange={handleFormChange}
@@ -95,8 +88,7 @@ const Signup = (props) => {
             placeholder="Age"
           />
 
-          <br />
-          {signupMutation.isLoading && <div>Loading...</div>}
+          {signupMutation.isLoading && <Loader />}
 
           {signupMutation.isError && (
             <div className="error-text">
@@ -104,14 +96,18 @@ const Signup = (props) => {
             </div>
           )}
 
-          <input type="submit" value="Create Account" />
+          <input
+            className="btn block-btn"
+            type="submit"
+            value="Create Account"
+          />
 
-          <br />
-
-          <button onClick={() => setShowSignup(false)}>Log in</button>
+          <p className="auth-account" onClick={() => setShowSignup(false)}>
+            Already have an account? <span>Log in</span>
+          </p>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 

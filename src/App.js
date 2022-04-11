@@ -56,7 +56,7 @@ function App() {
               setAuthenticated={setAuthenticated}
             />
           )}
-          <ReactQueryDevtools initialIsOpen={false} position="top-right" />
+          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
         </QueryClientProvider>
       </TodoProvider>
     </div>
