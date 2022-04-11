@@ -3,6 +3,8 @@ import { useMutation } from 'react-query';
 import TodoContext from '../../Context';
 import { postData } from '../../utils/httpbaseUtils';
 
+import './inputForm.css';
+
 const wordRegex = new RegExp(/postpone+/i);
 
 const TodoForm = (props) => {
@@ -59,19 +61,28 @@ const TodoForm = (props) => {
   };
 
   return (
-    <>
-      <form>
-        <input type="text" value={inputText} onChange={handleInputText} />
-        <button type="submit" onClick={handleTextAdd}>
-          {`Add${addTodoMutation?.isLoading ? 'ing...' : ''}`}
-        </button>
-        <button type="button" onClick={handleClear}>
-          Reset
+    <div className="form-container">
+      <form className="todo-form">
+        <div className="todo-input-container">
+          <input
+            className="todo-input"
+            type="text"
+            value={inputText}
+            onChange={handleInputText}
+          />
+          {(inputText?.length > 0 || error?.visible) && (
+            <button className="reset-btn" type="button" onClick={handleClear}>
+              X
+            </button>
+          )}
+        </div>
+        <button className="btn add-btn" type="submit" onClick={handleTextAdd}>
+          {`ADD${addTodoMutation?.isLoading ? 'ING...' : ''}`}
         </button>
       </form>
 
       {error?.visible && <div className="error-text">{error?.message}</div>}
-    </>
+    </div>
   );
 };
 

@@ -1,10 +1,22 @@
 import React, { useState } from 'react';
-import { useMutation } from 'react-query';
-import { postData } from '../../utils/httpbaseUtils';
-import { setLocalStorage, JWT_TOKEN } from '../../utils/commonUtils';
+import { useMutation, useQuery } from 'react-query';
+import { getData, postData, putData } from '../../utils/httpbaseUtils';
+import {
+  setLocalStorage,
+  JWT_TOKEN,
+  getLocalStorage,
+} from '../../utils/commonUtils';
+
+import Loader from '../Common/Loader';
 
 const Signup = (props) => {
-  const { setShowSignup, setAuthenticated } = props;
+  const {
+    setShowSignup,
+    setAuthenticated,
+    showProfileEdit,
+    hideProfileEditComponent,
+  } = props;
+
   const [signupPayload, setSignupPayload] = useState({
     name: '',
     email: '',
@@ -24,9 +36,40 @@ const Signup = (props) => {
     }
   );
 
+  const fetchUserByTokenQuery = useQuery(
+    'fetchUserById',
+    () => getData('user/me'),
+    {
+      enabled: !!getLocalStorage(JWT_TOKEN),
+
+      onSuccess: (data, variables, context) => {
+        setSignupPayload({
+          name: data?.data?.name,
+          email: data?.data?.email,
+          age: data?.data?.age,
+        });
+      },
+    }
+  );
+
+  const updateProfileMutation = useMutation(
+    (data) => {
+      return putData('user/me', data);
+    },
+    {
+      onSuccess: (data, variables, context) => {
+        hideProfileEditComponent();
+      },
+    }
+  );
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    signupMutation.mutate(signupPayload);
+    if (showProfileEdit) {
+      updateProfileMutation.mutate(signupPayload);
+    } else {
+      signupMutation.mutate(signupPayload);
+    }
   };
 
   const handleFormChange = (e) => {
@@ -37,14 +80,17 @@ const Signup = (props) => {
   };
 
   return (
-    <>
-      <h2>Create New User</h2>
-      <div className="login">
-        <form onSubmit={handleSubmit}>
-          <label>
-            <b>Name </b>
-          </label>
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2 className="auth-title">
+          {showProfileEdit ? 'Update User' : 'Create New User'}
+        </h2>
+
+        <form className="auth-form" onSubmit={handleSubmit}>
           <input
+            disabled={showProfileEdit}
+            className="auth-input"
+            autoComplete="off"
             name="name"
             value={signupPayload.name}
             onChange={(e) => {
@@ -54,12 +100,10 @@ const Signup = (props) => {
             placeholder="Name"
           />
 
-          <br />
-
-          <label>
-            <b>Email </b>
-          </label>
           <input
+            disabled={showProfileEdit}
+            className="auth-input"
+            autoComplete="off"
             name="email"
             value={signupPayload.email}
             onChange={(e) => {
@@ -69,25 +113,22 @@ const Signup = (props) => {
             placeholder="Email"
           />
 
-          <br />
+          {!showProfileEdit && (
+            <input
+              disabled={showProfileEdit}
+              className="auth-input"
+              autoComplete="off"
+              name="password"
+              value={signupPayload.password}
+              onChange={handleFormChange}
+              type="Password"
+              placeholder="Password"
+            />
+          )}
 
-          <label>
-            <b>Password </b>
-          </label>
           <input
-            name="password"
-            value={signupPayload.password}
-            onChange={handleFormChange}
-            type="Password"
-            placeholder="Password"
-          />
-
-          <br />
-
-          <label>
-            <b>Age </b>
-          </label>
-          <input
+            className="auth-input"
+            autoComplete="off"
             name="age"
             value={signupPayload.age}
             onChange={handleFormChange}
@@ -95,23 +136,39 @@ const Signup = (props) => {
             placeholder="Age"
           />
 
-          <br />
-          {signupMutation.isLoading && <div>Loading...</div>}
+          {(signupMutation.isLoading ||
+            fetchUserByTokenQuery?.isFetching ||
+            updateProfileMutation.isLoading) && <Loader />}
 
           {signupMutation.isError && (
             <div className="error-text">
               {signupMutation?.error?.response?.data}
             </div>
           )}
+          {updateProfileMutation.isError && (
+            <div className="error-text">
+              {updateProfileMutation?.error?.response?.data}
+            </div>
+          )}
 
-          <input type="submit" value="Create Account" />
+          <input
+            className="btn block-btn"
+            type="submit"
+            value={showProfileEdit ? 'Save' : 'Create Account'}
+          />
 
-          <br />
-
-          <button onClick={() => setShowSignup(false)}>Log in</button>
+          {showProfileEdit ? (
+            <p className="auth-account" onClick={hideProfileEditComponent}>
+              Go Back
+            </p>
+          ) : (
+            <p className="auth-account" onClick={() => setShowSignup(false)}>
+              Already have an account? <span>Log in</span>
+            </p>
+          )}
         </form>
       </div>
-    </>
+    </div>
   );
 };
 

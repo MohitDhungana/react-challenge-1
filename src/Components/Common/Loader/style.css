@@ -1,0 +1,18 @@
+[class*='classic']:before {
+  content: 'Loading...';
+}
+
+.classic-1 {
+  font-weight: bold;
+  font-family: sans-serif;
+  font-size: 15px;
+  animation: c1 1s linear infinite alternate;
+  color: var(--primary);
+  margin: 0.5rem 0.1rem;
+  text-align: center;
+}
+@keyframes c1 {
+  to {
+    opacity: 0;
+  }
+}

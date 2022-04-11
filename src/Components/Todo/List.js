@@ -2,7 +2,11 @@ import React, { useContext } from 'react';
 import { useQuery, useMutation } from 'react-query';
 import { getData, deleteData, putData } from '../../utils/httpbaseUtils';
 
+import Loader from '../Common/Loader';
+
 import TodoContext from '../../Context';
+
+import './list.css';
 
 const List = (props) => {
   const { queryClient } = useContext(TodoContext);
@@ -42,39 +46,62 @@ const List = (props) => {
     deleteTodoMutation.mutate(id);
   };
 
+  const getTodoCount = () => {
+    const completeTodoCount = todos?.filter((item) => item?.completed)?.length;
+    return `${completeTodoCount}/${todoCounts}`;
+  };
+
   return (
-    <section>
-      <h3>Todos</h3>
+    <div className="todo-items-card">
+      <h2 className="todo-title">
+        Todos {todoCounts > 0 && `(${getTodoCount()})`}
+      </h2>
 
       {(fetchTodoResult?.isLoading ||
         fetchTodoResult?.isRefetching ||
         deleteTodoMutation?.isLoading ||
-        updateMutation?.isLoading) && <div>loading...</div>}
+        updateMutation?.isLoading) && <Loader />}
 
-      {todoCounts === 0 && <div>You dont have any tasks right now</div>}
+      {todoCounts === 0 && (
+        <div style={{ textAlign: 'center' }}>
+          You dont have any tasks right now
+        </div>
+      )}
 
-      <ul className="todos">
+      <ul className="list-container">
         {todos?.map((todoItem) => (
-          <div key={todoItem?.id}>
-            <li className={todoItem?.completed ? 'text-strike' : ''}>
-              {todoItem?.description}(
-              {todoItem?.completed ? 'Complete' : 'Incomplete'})
-            </li>
-            <button
-              onClick={() =>
-                handleUpdateTask(todoItem?._id, todoItem?.completed)
-              }
+          <div className="todo-list" key={todoItem?.id}>
+            <li
+              className={`todo-items ${
+                todoItem?.completed ? 'incomplete-item' : ''
+              }`}
             >
-              Mark as {todoItem?.completed ? 'incomplete' : 'complete'}
-            </button>
+              {todoItem?.description}
+            </li>
 
-            <button onClick={() => handleDeleteClick(todoItem?._id)}>
-              Delete
-            </button>
+            <div className="todo-actions">
+              <button
+                className={`btn action-btn ${
+                  todoItem?.completed ? 'btn-secondary' : ''
+                }`}
+                onClick={() =>
+                  handleUpdateTask(todoItem?._id, todoItem?.completed)
+                }
+              >
+                Mark {todoItem?.completed ? 'Incomplete' : 'Complete'}
+              </button>
+
+              <button
+                className="btn btn-delete action-btn"
+                onClick={() => handleDeleteClick(todoItem?._id)}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
       </ul>
-    </section>
+    </div>
   );
 };
 

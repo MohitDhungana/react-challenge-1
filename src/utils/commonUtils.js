@@ -1,4 +1,5 @@
 export const JWT_TOKEN = 'naamche-token';
+export const USER_NAME = 'naamche-username';
 
 /**
  * Store string record in the storage

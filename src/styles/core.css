@@ -1,0 +1,40 @@
+.error-text {
+  color: red;
+  padding: 0.2rem 0.3rem;
+  font-size: 14px;
+  text-align: center;
+}
+
+.btn {
+  border: 0;
+  color: white;
+  font-weight: bold;
+  padding: 0.5rem;
+  margin-left: 0.2rem;
+  margin-right: 0.1rem;
+  background-color: var(--primary);
+  border-radius: 5px;
+  width: 10rem;
+  height: 2rem;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  cursor: pointer;
+  background-color: var(--primary-dark);
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+}
+
+.btn-secondary:hover {
+  background-color: var(--secondary-dark);
+}
+.btn-delete {
+  background-color: var(--primary-red);
+}
+
+.btn-delete:hover {
+  background-color: var(--primary-dark-red);
+}
