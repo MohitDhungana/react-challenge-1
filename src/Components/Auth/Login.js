@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
-import { postData } from '../../utils/httpbaseUtils';
+import { postData } from '../../utils/httpUtil';
 import {
   JWT_TOKEN,
   USER_NAME,

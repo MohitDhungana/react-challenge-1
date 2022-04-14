@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
-import { getData, postData, putData } from '../../utils/httpbaseUtils';
+import { getData, postData, putData } from '../../utils/httpUtil';
 import {
   setLocalStorage,
   JWT_TOKEN,

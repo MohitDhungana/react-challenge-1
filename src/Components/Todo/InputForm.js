@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useMutation } from 'react-query';
 import TodoContext from '../../Context';
-import { postData } from '../../utils/httpbaseUtils';
+import { postData } from '../../utils/httpUtil';
 
 import './inputForm.css';
 
@@ -69,6 +69,7 @@ const TodoForm = (props) => {
             type="text"
             value={inputText}
             onChange={handleInputText}
+            placeholder="New Todo"
           />
           {(inputText?.length > 0 || error?.visible) && (
             <button className="reset-btn" type="button" onClick={handleClear}>

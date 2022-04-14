@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useQuery, useMutation } from 'react-query';
-import { getData, deleteData, putData } from '../../utils/httpbaseUtils';
+import { getData, deleteData, putData } from '../../utils/httpUtil';
 
 import Loader from '../Common/Loader';
 
@@ -70,7 +70,7 @@ const List = (props) => {
 
       <ul className="list-container">
         {todos?.map((todoItem) => (
-          <div className="todo-list" key={todoItem?.id}>
+          <div className="todo-list" key={todoItem?._id}>
             <li
               className={`todo-items ${
                 todoItem?.completed ? 'incomplete-item' : ''

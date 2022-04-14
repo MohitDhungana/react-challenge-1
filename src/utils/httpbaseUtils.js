@@ -1,43 +1,54 @@
 import axios from 'axios';
-import { getLocalStorage, JWT_TOKEN, isAuthenticated } from './commonUtils';
+import {
+  getLocalStorage,
+  JWT_TOKEN,
+  isAuthenticated,
+  clearLocalStorage,
+} from './commonUtils';
 
-export function postData(url = '', data = {}) {
-  return axios.post(`${process.env.REACT_APP_REST_API_HOST}${url}`, data, {
-    headers: {
-      Authorization: isAuthenticated()
-        ? `Bearer ${getLocalStorage(JWT_TOKEN)}`
-        : '',
-    },
-  });
-}
+export const httpBase = (
+  isDownloadable = false, // for downloadable contents
+  cancelToken // use for sending a cancel token to cancel api calls with axios
+) => {
+  const headers = {
+    'X-XSRF-TOKEN': getLocalStorage(JWT_TOKEN),
+    Lang: 'en',
+  };
+  const normalHeaders = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    Authorization: isAuthenticated()
+      ? `Bearer ${getLocalStorage(JWT_TOKEN)}`
+      : '',
+  };
+  const downloadableHeaders = {
+    Accept: '*/*',
+    'Content-Type': 'application/json',
+  };
 
-export function putData(url = '', data = {}) {
-  return axios.put(`${process.env.REACT_APP_REST_API_HOST}${url}`, data, {
-    headers: {
-      Authorization: isAuthenticated()
-        ? `Bearer ${getLocalStorage(JWT_TOKEN)}`
-        : '',
-    },
+  const api = axios.create({
+    baseURL: `${process.env.REACT_APP_REST_API_HOST}`,
+    headers: isDownloadable
+      ? { ...headers, ...downloadableHeaders }
+      : { ...headers, ...normalHeaders },
+    responseType: isDownloadable ? 'blob' : 'json',
+    cancelToken: cancelToken || undefined,
   });
-}
 
-export function deleteData(url = '', id = '') {
-  return axios.delete(`${process.env.REACT_APP_REST_API_HOST}${url}/${id}`, {
-    headers: {
-      Authorization: isAuthenticated()
-        ? `Bearer ${getLocalStorage(JWT_TOKEN)}`
-        : '',
+  api.interceptors.response.use(
+    (response) => {
+      return response;
     },
-  });
-}
+    (error) => {
+      if (401 === error.response.status) {
+        clearLocalStorage(JWT_TOKEN);
+        window.location.reload();
+      }
+      // handle other HTTP response code errors here
 
-export function getData(url, data) {
-  return axios.get(`${process.env.REACT_APP_REST_API_HOST}${url}`, {
-    params: data,
-    headers: {
-      Authorization: isAuthenticated()
-        ? `Bearer ${getLocalStorage(JWT_TOKEN)}`
-        : '',
-    },
-  });
-}
+      return Promise.reject(error);
+    }
+  );
+
+  return api;
+};
