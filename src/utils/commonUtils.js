@@ -41,5 +41,8 @@ export let getToken = () => {
 };
 
 export let isAuthenticated = () => {
+  // check token validity with JWT package
+
+  // here, only the presence of token being checked
   return !!getToken();
 };

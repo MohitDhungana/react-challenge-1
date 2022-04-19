@@ -51,6 +51,45 @@ function App() {
     window.location.reload();
   };
 
+  const showComponentHandler = () => {
+    if (isAuthenticated() || authenticated) {
+      if (showProfileEdit) {
+        return (
+          <Layout>
+            <Signup
+              showProfileEdit={showProfileEdit}
+              hideProfileEditComponent={hideProfileEditComponent}
+              setShowSignup={setShowSignup}
+              setAuthenticated={setAuthenticated}
+            />
+          </Layout>
+        );
+      } else {
+        return (
+          <Layout>
+            <TodoApp />
+          </Layout>
+        );
+      }
+    }
+
+    if (showSignup) {
+      return (
+        <Signup
+          setShowSignup={setShowSignup}
+          setAuthenticated={setAuthenticated}
+        />
+      );
+    }
+
+    return (
+      <Login
+        setShowSignup={setShowSignup}
+        setAuthenticated={setAuthenticated}
+      />
+    );
+  };
+
   return (
     <div className="App">
       <TodoProvider
@@ -63,30 +102,7 @@ function App() {
         }}
       >
         <QueryClientProvider client={queryClient}>
-          {showProfileEdit ? (
-            <Layout>
-              <Signup
-                showProfileEdit={showProfileEdit}
-                hideProfileEditComponent={hideProfileEditComponent}
-                setShowSignup={setShowSignup}
-                setAuthenticated={setAuthenticated}
-              />
-            </Layout>
-          ) : isAuthenticated() || authenticated ? (
-            <Layout>
-              <TodoApp />
-            </Layout>
-          ) : showSignup ? (
-            <Signup
-              setShowSignup={setShowSignup}
-              setAuthenticated={setAuthenticated}
-            />
-          ) : (
-            <Login
-              setShowSignup={setShowSignup}
-              setAuthenticated={setAuthenticated}
-            />
-          )}
+          {showComponentHandler()}
           <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
         </QueryClientProvider>
       </TodoProvider>
